@@ -1,0 +1,248 @@
+<div *ngIf="show" class="page_content">
+    <div *ngIf="active !=5" class="header_wrap">
+        <header class="header">Loan Application Form</header>
+        <div class="stepper">
+            <div class="step " [ngClass]="{'active' :active==1, 'valid': valid >= 1}" (click)="toggleActive(1)">
+                Application Info</div>
+            <div class="step " [ngClass]="{'active' :active==2, 'valid': valid >= 2}" (click)="toggleActive(2)">
+                Applicant Personal Data</div>
+            <div class="step  " [ngClass]="{'active' :active==3, 'valid': valid >= 3}" (click)="toggleActive(3)">Loan
+                Agreement</div>
+            <div class="step " [ngClass]="{'active' :active==4, 'valid': valid >= 4}" (click)="toggleActive(4)">Summary
+            </div>
+
+
+        </div>
+    </div>
+    <div *ngIf="active!=5" class="header_wrap mobile">
+        <header class="header">Loan Application Form</header>
+        <div class="stepper">
+            <div class="step " [ngClass]="{'active' :active==1, 'valid': valid >= 1}" (click)="toggleActive(1)">
+                1</div>
+            <div class="step " [ngClass]="{'active' :active==2, 'valid': valid >= 2}" (click)="toggleActive(2)">
+                2</div>
+            <div class="step  " [ngClass]="{'active' :active==3, 'valid': valid >= 3}" (click)="toggleActive(3)">
+                3</div>
+            <div class="step " [ngClass]="{'active' :active==4, 'valid': valid >= 4}" (click)="toggleActive(4)">4
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="inner_wrap">
+        <form *ngIf="active !=5" [formGroup]="applicationForm">
+            <div *ngIf="active==1">
+
+                <div class="row">
+                    <div class="hdr">Loan Amount: <span class="required">*</span> </div>
+                    <ngx-slider [(value)]="loanAmount" formControlName="amount" [options]="loanAmountoptions">
+                    </ngx-slider>
+                    <div *ngIf="f.amount.invalid && (f.amount.dirty || f.amount.touched)" class="alert">
+                        <div class="required" *ngIf="f.amount.errors?.required">Amount is required.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="hdr">Loan Term: <span class="required">*</span> </div>
+                    <ngx-slider [(value)]="loanTerm" formControlName="term" [options]="loanTermoptions"></ngx-slider>
+                    <div *ngIf="f.term.invalid && (f.term.dirty || f.term.touched)" class="alert">
+                        <div class="required" *ngIf="f.term.errors?.required">Term is required.</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="grid">
+                        <div class="hdr" style="display: inline-block;">Repayment Date Plan <span
+                                class="required">*</span>
+                        </div>
+                        <div class="tooltip" style="background-image: url(../../../assets/question.png);">
+                            <i class="fa-info-circle"></i>
+                            <span class="tooltiptext">The date on which your account will be debited for the loan
+                                payment.
+                                You’ll be able to easily change at any time via Internet Banking.</span>
+                        </div>
+                        <div>
+                            <input type="text" autocomplete="off" aria-required="true" [matMenuTriggerFor]="repayment"
+                                formControlName='repaymentDate' style="background-image: url('../../../assets/search_arrow_down.png');
+                             " />
+                            <div *ngIf="f.monthlyIncome.invalid && (f.monthlyIncome.dirty || f.monthlyIncome.touched)"
+                                class="alert">
+                                <div class="required" *ngIf="f.monthlyIncome.errors?.required">Repayment Date is
+                                    required.</div>
+                            </div>
+                            <mat-menu #repayment="matMenu">
+                                <button style="display: block; margin-bottom: 0.4rem"
+                                    (click)="selectClick(date, 'repaymentDate')" *ngFor="let date of dates"
+                                    class="dropdown">
+                                    <span>{{date}}</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="hdr" style="display: inline-block;">Monthly Income ($)<span
+                                class="required">*</span>
+                        </div>
+                        <div class="tooltip" style="background-image: url(../../../assets/question.png);">
+                            <i class="fa-info-circle"></i>
+                            <span class="tooltiptext">The amount of money you earn every month after tax.</span>
+                        </div>
+                        <div>
+                            <input type="number" autocomplete="off" aria-required="true" autocomplete="off"
+                                aria-required="true" formControlName='monthlyIncome' />
+                            <div *ngIf="f.monthlyIncome.invalid && (f.monthlyIncome.dirty || f.monthlyIncome.touched)"
+                                class="alert">
+                                <div class="required" *ngIf="f.monthlyIncome.errors?.required">Monthly income is
+                                    required.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <button class="nextBtn" (click)="send(1)">Next</button>
+                </div>
+
+            </div>
+            <div *ngIf="active==2">
+                <div class="header">Borrowers Data</div>
+                <hr>
+                <div class="row">
+                    <div class="grid">
+                        <div class="hdr" style="display: inline-block;">First Name<span class="required">*</span></div>
+                        <div>
+                            <input placeholder="Enter First Name" type="text" autocomplete="off" aria-required="true"
+                                formControlName='firstName' />
+                            <div *ngIf="f.firstName.invalid && (f.firstName.dirty || f.firstName.touched)"
+                                class="alert">
+                                <div class="required" *ngIf="f.firstName.errors?.required">First name is required.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="hdr" style="display: inline-block;">Last Name <span class="required">*</span></div>
+                        <div>
+                            <input placeholder="Enter Last Name" type="text" autocomplete="off" aria-required="true"
+                                formControlName='lastName' />
+                            <div *ngIf="f.lastName.invalid && (f.lastName.dirty || f.lastName.touched)" class="alert">
+                                <div class="required" *ngIf="f.lastName.errors?.required">Last name is required.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="grid">
+                        <div class="hdr" style="display: inline-block;">Phone No<span class="required">*</span></div>
+                        <div>
+                            <input placeholder="Enter Phone" type="phone" autocomplete="off" aria-required="true"
+                                formControlName='phone' />
+                            <div *ngIf="f.phone.invalid && (f.phone.dirty || f.phone.touched)" class="alert">
+                                <div class="required" *ngIf="f.phone.errors?.required">Phone no is required.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="hdr" style="display: inline-block;">DOB <span class="required">*</span></div>
+                        <div>
+                            <input type="date" autocomplete="off" aria-required="true" formControlName='dob' />
+                            <div *ngIf="f.dob.invalid && (f.dob.dirty || f.dob.touched)" class="alert">
+                                <div class="required" *ngIf="f.dob.errors?.required">DOB is required.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="header">Personal Data</div>
+                <hr>
+                <div class="row">
+                    <div class="hdr" style="display: inline-block;">Marital Status<span class="required">*</span>
+                    </div>
+
+                    <div>
+                        <input type="text" autocomplete="off" aria-required="true" [matMenuTriggerFor]="maritalStatus"
+                            formControlName='maritalStatus' style="background-image: url('../../../assets/search_arrow_down.png');
+                             " />
+                        <mat-menu #maritalStatus="matMenu">
+                            <button style="display: block; margin-bottom: 0.4rem"
+                                (click)="selectClick(status, 'maritalStatus')" *ngFor="let status of mStatus"
+                                class="dropdown">
+                                <span>{{status}}</span>
+                            </button>
+                        </mat-menu>
+                        <div *ngIf="f.maritalStatus.invalid && (f.maritalStatus.dirty || f.maritalStatus.touched)"
+                            class="alert">
+                            <div class="required" *ngIf="f.maritalStatus.errors?.required">Marital status is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="display: flex;justify-content: space-between;">
+                    <button class="nextBtn" (click)="active=1">Back</button>
+                    <button class="nextBtn" (click)="send(2)">Next</button>
+                </div>
+            </div>
+            <div *ngIf="active==3">
+                <div class="clause">
+                    THIS LOAN AGREEMENT AND PROMISSORY NOTE, is made this day {{currentDate | date:'yyyy-MM-dd'}} by and
+                    among <b> {{f.firstName.value}} {{f.lastName.value}} and Swedbank</b>, FOR VALUE RECEIVED, BORROWER
+                    promises to repay to the order of LENDER, the sum of {{f.amount.value}} within
+                    {{f.repaymentDate.value}} days
+                </div>
+                <div class="row">
+                    <input type="checkbox" formControlName='agree'>
+                    <div style="display: inline-block;margin-left: 10px;">I agree to the terms stated above</div>
+                </div>
+                <div class="row" style="display: flex;justify-content: space-between;">
+                    <button class="nextBtn" (click)="active=2">Back</button>
+                    <button class="nextBtn" (click)="send(3)">Next</button>
+                </div>
+            </div>
+            <div *ngIf="active==4">
+                <div class="summary">
+                    <div class="hdr" style="display: inline-block;margin-right: 15px;"> <b> Name:</b></div>
+                    <div  style="display: inline-block;margin-right: 15px;">{{f.firstName.value}} {{f.lastName.value}}</div>
+                </div>
+                <div>
+                    <div class="hdr"  style="display: inline-block;margin-right: 15px;"><b> Phone:</b></div>
+                    <div  style="display: inline-block;margin-right: 15px;">{{f.phone.value}}</div>
+                </div>
+                <div>
+                    <div class="hdr"  style="display: inline-block;margin-right: 15px;"><b> Marital Status: </b></div>
+                    <div  style="display: inline-block;margin-right: 15px;">{{f.maritalStatus.value}}</div>
+                </div>
+                <div>
+                    <div class="hdr"  style="display: inline-block;margin-right: 15px;"><b> Loan Amount:</b></div>
+                    <div  style="display: inline-block;margin-right: 15px;">{{f.amount.value}}</div>
+                </div>
+                <div>
+                    <div class="hdr"  style="display: inline-block;margin-right: 15px;"><b> Repayment Date:</b></div>
+                    <div  style="display: inline-block;margin-right: 15px;">{{f.repaymentDate.value}} days</div>
+                </div>
+                <div class="row" style="display: flex;justify-content: space-between;">
+                    <button class="nextBtn" (click)="active=3">Back</button>
+                    <button class="nextBtn" (click)="send(4)">Submit</button>
+                </div>
+            </div>
+           
+        </form>
+        <div class="applicationComplete" *ngIf="active==5">
+            <div class="wrap">
+            <img src="../../../assets/toastr-checked.png" alt="">
+            <div>Application Sent Successfully</div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #popUp let-modal>
+    <div class="welcome">
+        <div class="img_wrap"><img src="../../../assets/signing.png" alt="Loan"></div>
+        <div class="header">Swedbank Small Loan Application</div>
+        <div class="text_wrap">Completing an application enables us to find the most suitable solution for you and make
+            preliminary
+            assessment of your solvency. Completing an application does not oblige you to sign an agreement.</div>
+        <div class="btn" (click)="toggleshow()">Complete Application</div>
+    </div>
+</ng-template>
